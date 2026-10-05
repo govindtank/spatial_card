@@ -1,0 +1,16 @@
+.dart_tool/
+.packages
+build/
+.idea/
+*.iml
+.DS_Store
+
+example/.dart_tool/
+example/.packages
+example/build/
+example/.idea/
+example/*.iml
+example/.flutter-plugins
+example/.flutter-plugins-dependencies
+
+.github/
