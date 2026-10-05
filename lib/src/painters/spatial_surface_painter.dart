@@ -88,15 +88,9 @@ class SpatialSurfacePainter extends CustomPainter {
           ..style = PaintingStyle.stroke;
         for (double d = -size.height; d < size.width + size.height; d += 8.0) {
           canvas.drawLine(
-            Offset(d, 0),
-            Offset(d + size.height, size.height),
-            fiberPaint1,
-          );
-          canvas.drawLine(
-            Offset(d + 4, 0),
-            Offset(d + 4 + size.height, size.height),
-            fiberPaint2,
-          );
+              Offset(d, 0), Offset(d + size.height, size.height), fiberPaint1);
+          canvas.drawLine(Offset(d + 4, 0),
+              Offset(d + 4 + size.height, size.height), fiberPaint2);
         }
         break;
 
@@ -119,11 +113,8 @@ class SpatialSurfacePainter extends CustomPainter {
           ..strokeWidth = 1.5
           ..style = PaintingStyle.stroke;
         for (double d = -size.height; d < size.width + size.height; d += 6.0) {
-          canvas.drawLine(
-            Offset(d, 0),
-            Offset(d + size.height * 0.7, size.height),
-            holoStripePaint,
-          );
+          canvas.drawLine(Offset(d, 0),
+              Offset(d + size.height * 0.7, size.height), holoStripePaint);
         }
         break;
 
@@ -158,9 +149,8 @@ class SpatialSurfacePainter extends CustomPainter {
     final lightY = ((tiltY + 1.0) / 2.0) * size.height;
 
     final angle = material.sheenAngle + (tiltX * 0.4);
-    final diagonalDist = math.sqrt(
-      size.width * size.width + size.height * size.height,
-    );
+    final diagonalDist =
+        math.sqrt(size.width * size.width + size.height * size.height);
 
     final p1 = Offset(
       lightX - math.cos(angle) * diagonalDist * 0.5,
@@ -171,10 +161,8 @@ class SpatialSurfacePainter extends CustomPainter {
       lightY + math.sin(angle) * diagonalDist * 0.5,
     );
 
-    final dispersionAlpha = (material.chromaticDispersion * 0.45).clamp(
-      0.0,
-      1.0,
-    );
+    final dispersionAlpha =
+        (material.chromaticDispersion * 0.45).clamp(0.0, 1.0);
 
     final rainbowGradient = LinearGradient(
       begin: Alignment.topLeft,
@@ -237,7 +225,9 @@ class SpatialSurfacePainter extends CustomPainter {
   }
 
   void _paintOuterBorder(Canvas canvas, RRect rrect) {
-    if (material.borderWidth <= 0.0) return;
+    if (material.borderWidth <= 0.0) {
+      return;
+    }
 
     // Shift border highlight based on light direction
     final borderGradient = LinearGradient(

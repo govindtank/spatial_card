@@ -87,13 +87,12 @@ class _SpatialCardState extends State<SpatialCard>
     }
     _controller.addListener(_onControllerUpdate);
 
-    _springController =
-        AnimationController(
-          vsync: this,
-          duration: const Duration(milliseconds: 600),
-        )..addListener(() {
-          _controller.setTilt(_springX.value, _springY.value);
-        });
+    _springController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    )..addListener(() {
+        _controller.setTilt(_springX.value, _springY.value);
+      });
 
     _springX = const AlwaysStoppedAnimation(0.0);
     _springY = const AlwaysStoppedAnimation(0.0);
@@ -157,7 +156,9 @@ class _SpatialCardState extends State<SpatialCard>
   }
 
   void _onIdleDrift() {
-    if (_isInteracting) return;
+    if (_isInteracting) {
+      return;
+    }
     if (widget.config.lightTracking == LightTrackingMode.touchOnly ||
         widget.config.lightTracking == LightTrackingMode.fixed) {
       return;
@@ -171,7 +172,9 @@ class _SpatialCardState extends State<SpatialCard>
   }
 
   void _handlePointerMove(Offset localPosition, Size size) {
-    if (size.width == 0 || size.height == 0) return;
+    if (size.width == 0 || size.height == 0) {
+      return;
+    }
 
     final normX = ((localPosition.dx / size.width) - 0.5) * 2.0;
     final normY = ((localPosition.dy / size.height) - 0.5) * 2.0;
@@ -184,11 +187,12 @@ class _SpatialCardState extends State<SpatialCard>
   }
 
   void _checkHapticThreshold(double x, double y) {
-    if (!widget.config.enableHaptics) return;
+    if (!widget.config.enableHaptics) {
+      return;
+    }
 
-    final dist = math.sqrt(
-      math.pow(x - _lastHapticX, 2) + math.pow(y - _lastHapticY, 2),
-    );
+    final dist = math
+        .sqrt(math.pow(x - _lastHapticX, 2) + math.pow(y - _lastHapticY, 2));
     if (dist >= 0.65) {
       _lastHapticX = x;
       _lastHapticY = y;
@@ -197,13 +201,21 @@ class _SpatialCardState extends State<SpatialCard>
   }
 
   void _startSpringReset() {
-    _springX = Tween<double>(begin: _controller.tiltX, end: 0.0).animate(
-      CurvedAnimation(parent: _springController, curve: Curves.elasticOut),
-    );
+    _springX = Tween<double>(
+      begin: _controller.tiltX,
+      end: 0.0,
+    ).animate(CurvedAnimation(
+      parent: _springController,
+      curve: Curves.elasticOut,
+    ));
 
-    _springY = Tween<double>(begin: _controller.tiltY, end: 0.0).animate(
-      CurvedAnimation(parent: _springController, curve: Curves.elasticOut),
-    );
+    _springY = Tween<double>(
+      begin: _controller.tiltY,
+      end: 0.0,
+    ).animate(CurvedAnimation(
+      parent: _springController,
+      curve: Curves.elasticOut,
+    ));
 
     _springController.forward(from: 0.0).then((_) {
       if (mounted && widget.config.enableIdleDrift && !_isInteracting) {
@@ -245,8 +257,7 @@ class _SpatialCardState extends State<SpatialCard>
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final cardWidth =
-            widget.width ??
+        final cardWidth = widget.width ??
             (constraints.hasBoundedWidth ? constraints.maxWidth : 340.0);
         final cardHeight = widget.height ?? (cardWidth / 1.586);
 
@@ -266,9 +277,7 @@ class _SpatialCardState extends State<SpatialCard>
                   _idleDriftController.stop();
                 }
                 _handlePointerMove(
-                  event.localPosition,
-                  Size(cardWidth, cardHeight),
-                );
+                    event.localPosition, Size(cardWidth, cardHeight));
               },
               onExit: (_) {
                 _isInteracting = false;
@@ -286,15 +295,11 @@ class _SpatialCardState extends State<SpatialCard>
                     _controller.triggerHaptic();
                   }
                   _handlePointerMove(
-                    details.localPosition,
-                    Size(cardWidth, cardHeight),
-                  );
+                      details.localPosition, Size(cardWidth, cardHeight));
                 },
                 onPanUpdate: (details) {
                   _handlePointerMove(
-                    details.localPosition,
-                    Size(cardWidth, cardHeight),
-                  );
+                      details.localPosition, Size(cardWidth, cardHeight));
                 },
                 onPanEnd: (_) {
                   _isInteracting = false;
@@ -343,13 +348,11 @@ class _SpatialCardState extends State<SpatialCard>
 
                           // 3. Multi-depth Parallax Layer Stack
                           ...widget.layers.map((layer) {
-                            final dx =
-                                tiltX *
+                            final dx = tiltX *
                                 widget.config.parallaxIntensity *
                                 layer.depth *
                                 layer.offsetMultiplier.dx;
-                            final dy =
-                                -tiltY *
+                            final dy = -tiltY *
                                 widget.config.parallaxIntensity *
                                 layer.depth *
                                 layer.offsetMultiplier.dy;
@@ -368,10 +371,8 @@ class _SpatialCardState extends State<SpatialCard>
                                       color: layer.shadowColor,
                                       blurRadius:
                                           layer.shadowBlurRadius * layer.depth,
-                                      offset: Offset(
-                                        layerShadowDx,
-                                        layerShadowDy,
-                                      ),
+                                      offset:
+                                          Offset(layerShadowDx, layerShadowDy),
                                     ),
                                   ],
                                 ),

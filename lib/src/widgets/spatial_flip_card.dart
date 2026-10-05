@@ -105,13 +105,12 @@ class _SpatialFlipCardState extends State<SpatialFlipCard>
       duration: widget.flipDuration,
     );
 
-    _flipAnimation =
-        Tween<double>(begin: 0.0, end: 1.0).animate(
-          CurvedAnimation(parent: _flipAnimController, curve: widget.flipCurve),
-        )..addListener(() {
-          _controller.setFlipProgress(_flipAnimation.value);
-          setState(() {});
-        });
+    _flipAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _flipAnimController, curve: widget.flipCurve),
+    )..addListener(() {
+        _controller.setFlipProgress(_flipAnimation.value);
+        setState(() {});
+      });
 
     _controller.addListener(_onControllerFlipChanged);
   }
@@ -127,7 +126,9 @@ class _SpatialFlipCardState extends State<SpatialFlipCard>
   }
 
   void _toggleFlip() {
-    if (_flipAnimController.isAnimating) return;
+    if (_flipAnimController.isAnimating) {
+      return;
+    }
 
     if (widget.config.enableHaptics) {
       _controller.triggerHaptic();
@@ -175,11 +176,9 @@ class _SpatialFlipCardState extends State<SpatialFlipCard>
                 alignment: FractionalOffset.center,
                 transform: Matrix4.identity()
                   ..rotateY(
-                    widget.flipAxis == FlipAxis.horizontal ? math.pi : 0.0,
-                  )
+                      widget.flipAxis == FlipAxis.horizontal ? math.pi : 0.0)
                   ..rotateX(
-                    widget.flipAxis == FlipAxis.vertical ? math.pi : 0.0,
-                  ),
+                      widget.flipAxis == FlipAxis.vertical ? math.pi : 0.0),
                 child: SpatialCard(
                   key: const ValueKey('back_face'),
                   material: widget.backMaterial ?? widget.frontMaterial,

@@ -59,8 +59,7 @@ class SpatialMaterial {
     double chromaticDispersion = 0.85,
   }) {
     return SpatialMaterial(
-      backgroundGradient:
-          customGradient ??
+      backgroundGradient: customGradient ??
           const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -231,17 +230,17 @@ class SpatialMaterial {
 
   @override
   int get hashCode => Object.hash(
-    backgroundGradient,
-    specularIntensity,
-    specularRadius,
-    chromaticDispersion,
-    sheenAngle,
-    borderColor,
-    borderWidth,
-    innerHighlightColor,
-    pattern,
-    baseColor,
-  );
+        backgroundGradient,
+        specularIntensity,
+        specularRadius,
+        chromaticDispersion,
+        sheenAngle,
+        borderColor,
+        borderWidth,
+        innerHighlightColor,
+        pattern,
+        baseColor,
+      );
 }
 
 /// Surface micro-texture patterns rendered onto the material base.

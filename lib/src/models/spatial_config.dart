@@ -154,21 +154,21 @@ class SpatialConfig {
 
   @override
   int get hashCode => Object.hash(
-    maxTiltAngle,
-    perspective,
-    parallaxIntensity,
-    pressDepression,
-    pressScale,
-    springDamping,
-    springStiffness,
-    enableHaptics,
-    enableIdleDrift,
-    idleDriftSpeed,
-    outerShadowBlurRadius,
-    outerShadowOpacity,
-    borderRadius,
-    lightTracking,
-  );
+        maxTiltAngle,
+        perspective,
+        parallaxIntensity,
+        pressDepression,
+        pressScale,
+        springDamping,
+        springStiffness,
+        enableHaptics,
+        enableIdleDrift,
+        idleDriftSpeed,
+        outerShadowBlurRadius,
+        outerShadowOpacity,
+        borderRadius,
+        lightTracking,
+      );
 }
 
 /// Determines what drives the light reflection and 3D tilt coordinates.

@@ -46,10 +46,8 @@ class _SpatialCardStackState extends State<SpatialCardStack> {
     }
 
     final totalCards = widget.children.length;
-    final visibleCount = (totalCards - _currentIndex).clamp(
-      0,
-      widget.maxVisibleCards,
-    );
+    final visibleCount =
+        (totalCards - _currentIndex).clamp(0, widget.maxVisibleCards);
 
     return Stack(
       alignment: Alignment.center,
@@ -57,14 +55,14 @@ class _SpatialCardStackState extends State<SpatialCardStack> {
         // Reverse order so top card renders on top
         final reverseIndex = visibleCount - 1 - index;
         final cardIndex = _currentIndex + reverseIndex;
-        if (cardIndex >= totalCards) return const SizedBox.shrink();
+        if (cardIndex >= totalCards) {
+          return const SizedBox.shrink();
+        }
 
         final scale = 1.0 - (reverseIndex * widget.scaleStep);
         final offsetY = reverseIndex * widget.layerOffset;
-        final opacity = (1.0 - (reverseIndex * widget.opacityStep)).clamp(
-          0.0,
-          1.0,
-        );
+        final opacity =
+            (1.0 - (reverseIndex * widget.opacityStep)).clamp(0.0, 1.0);
 
         final isTop = reverseIndex == 0;
 

@@ -96,12 +96,12 @@ class SpatialLayer {
 
   @override
   int get hashCode => Object.hash(
-    child,
-    depth,
-    offsetMultiplier,
-    castShadow,
-    shadowBlurRadius,
-    shadowColor,
-    alignment,
-  );
+        child,
+        depth,
+        offsetMultiplier,
+        castShadow,
+        shadowBlurRadius,
+        shadowColor,
+        alignment,
+      );
 }

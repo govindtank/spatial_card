@@ -30,14 +30,16 @@ class SpatialController extends ChangeNotifier {
     double initialTiltX = 0.0,
     double initialTiltY = 0.0,
     bool initiallyFlipped = false,
-  }) : _tiltX = initialTiltX,
-       _tiltY = initialTiltY,
-       _isFlipped = initiallyFlipped,
-       _flipProgress = initiallyFlipped ? 1.0 : 0.0;
+  })  : _tiltX = initialTiltX,
+        _tiltY = initialTiltY,
+        _isFlipped = initiallyFlipped,
+        _flipProgress = initiallyFlipped ? 1.0 : 0.0;
 
   /// Sets the 2D tilt coordinates directly in normalized space (`[-1.0, 1.0]`).
   void setTilt(double x, double y) {
-    if (_isDisposed) return;
+    if (_isDisposed) {
+      return;
+    }
     final clampedX = x.clamp(-1.0, 1.0);
     final clampedY = y.clamp(-1.0, 1.0);
     if (_tiltX != clampedX || _tiltY != clampedY) {
@@ -49,7 +51,9 @@ class SpatialController extends ChangeNotifier {
 
   /// Sets the press state of the card.
   void setPressed(bool pressed) {
-    if (_isDisposed) return;
+    if (_isDisposed) {
+      return;
+    }
     if (_isPressed != pressed) {
       _isPressed = pressed;
       notifyListeners();
@@ -58,7 +62,9 @@ class SpatialController extends ChangeNotifier {
 
   /// Updates the normalized flip progress (`0.0` to `1.0`).
   void setFlipProgress(double progress) {
-    if (_isDisposed) return;
+    if (_isDisposed) {
+      return;
+    }
     final clamped = progress.clamp(0.0, 1.0);
     if (_flipProgress != clamped) {
       _flipProgress = clamped;
@@ -69,7 +75,9 @@ class SpatialController extends ChangeNotifier {
 
   /// Toggles the flip state between front and back.
   void toggleFlip() {
-    if (_isDisposed) return;
+    if (_isDisposed) {
+      return;
+    }
     _isFlipped = !_isFlipped;
     notifyListeners();
   }
