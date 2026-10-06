@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:spatial_card/spatial_card.dart';
@@ -78,7 +79,7 @@ void main() {
   });
 
   group('SpatialController Tests', () {
-    test('Controller handles tilt, press, and flip updates', () {
+    test('Controller handles tilt, press, and flip updates', () async {
       final controller = SpatialController();
       expect(controller.tiltX, 0.0);
       expect(controller.tiltY, 0.0);
@@ -103,6 +104,15 @@ void main() {
       controller.resetTilt();
       expect(controller.tiltX, 0.0);
       expect(controller.tiltY, 0.0);
+
+      // Stream binding test
+      final streamController = StreamController<Offset>();
+      controller.bindTiltStream(streamController.stream);
+      streamController.add(const Offset(0.35, -0.45));
+      await Future<void>.delayed(Duration.zero);
+      expect(controller.tiltX, 0.35);
+      expect(controller.tiltY, -0.45);
+      await streamController.close();
 
       controller.dispose();
     });

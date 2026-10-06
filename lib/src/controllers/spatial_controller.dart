@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
@@ -9,6 +10,7 @@ class SpatialController extends ChangeNotifier {
   double _flipProgress = 0.0;
   bool _isPressed = false;
   bool _isDisposed = false;
+  StreamSubscription<Offset>? _tiltSubscription;
 
   /// Current normalized tilt along horizontal axis (range `[-1.0, 1.0]`).
   double get tiltX => _tiltX;
@@ -47,6 +49,15 @@ class SpatialController extends ChangeNotifier {
       _tiltY = clampedY;
       notifyListeners();
     }
+  }
+
+  /// Binds a stream of 2D tilt offsets (e.g. from gyroscope / accelerometer sensors)
+  /// to dynamically drive card rotation and lighting in real-time.
+  void bindTiltStream(Stream<Offset> stream) {
+    _tiltSubscription?.cancel();
+    _tiltSubscription = stream.listen((offset) {
+      setTilt(offset.dx, offset.dy);
+    });
   }
 
   /// Sets the press state of the card.
@@ -94,6 +105,8 @@ class SpatialController extends ChangeNotifier {
 
   @override
   void dispose() {
+    _tiltSubscription?.cancel();
+    _tiltSubscription = null;
     _isDisposed = true;
     super.dispose();
   }
