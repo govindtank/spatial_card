@@ -9,14 +9,6 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
 </p>
 
-<p align="center">
-  <b>A high-performance Flutter engine for 3D tactile interactive cards, multi-plane Z-parallax, dynamic specular lighting, and holographic chromatic foil shaders.</b>
-</p>
-
-<p align="center">
-  <img src="./assets/spatial_card_demo.gif" width="600" alt="SpatialCard Interactive Demo" style="border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" />
-</p>
-
 ---
 
 ## ✨ Why `spatial_card`?
