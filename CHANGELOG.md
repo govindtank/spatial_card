@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.2
+
+* **Documentation & Assets**: Standardized centered vector badge header, added Live Web Demo badge, absolute asset links, and ecosystem pairings.
+
 ## 1.0.1
 
 - **Hardware Sensor Stream Binding:** Added `SpatialController.bindTiltStream(Stream<Offset> stream)` for direct binding of gyroscope / accelerometer sensors.

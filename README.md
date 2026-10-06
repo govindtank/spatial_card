@@ -9,40 +9,44 @@
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
 </p>
 
----
-
-## ✨ Why `spatial_card`?
-
-Most card widgets in Flutter are flat 2D boxes with static box shadows. Previous attempts at 3D depth often relied on heavy 30+ MB machine-learning models (like TFLite depth estimation) that suffer from native build failures, slow load times, and high memory usage.
-
-`spatial_card` takes a **pure-Flutter, zero-native-dependency approach**:
-
-- ⚡ **Ultra Lightweight (< 50 KB):** Zero heavy ML model weights or C++ dependencies.
-- 🚀 **Silky 120 FPS Performance:** Fully hardware-accelerated via Impeller and Skia.
-- 💎 **True Multi-Plane Z-Parallax:** Position any Flutter widget on distinct elevation planes (`SpatialLayer`) with dynamic drop shadows.
-- 🌈 **Physical Specular & Chromatic Sheen:** Dynamic specular glare and prismatic rainbow dispersion that react fluidly to finger touches and cursor hover.
-- 🔄 **3D Double-Sided Flip:** Flip between front and back faces with continuous 3D perspective (`SpatialFlipCard`).
-- 📚 **3D Card Stack / Deck:** Depth-scaled swipeable card carousels (`SpatialCardStack`).
-- 🌐 **100% Cross-Platform:** Flawless support for iOS, Android, Web, macOS, Windows, and Linux.
-
----
-
-## 📸 Architecture & Visual Overview
-
 <p align="center">
-  <img src="./assets/screenshot.svg" width="100%" alt="SpatialCard Architecture Overview" />
+  <img src="https://raw.githubusercontent.com/govindtank/spatial_card/main/assets/spatial_card_demo.gif" width="600" alt="SpatialCard Interactive Demo" style="border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);" />
 </p>
 
 ---
 
-## 📦 Installation
+## ✨ Why `spatial_card`?
 
-Add `spatial_card` to your `pubspec.yaml`:
+  Most card widgets in Flutter are flat 2D boxes with static box shadows. Previous attempts at 3D depth often relied on heavy 30+ MB machine-learning models (like TFLite depth estimation) that suffer from native build failures, slow load times, and high memory usage.
 
-```yaml
-dependencies:
-  spatial_card: ^1.0.1
-```
+  `spatial_card` takes a **pure-Flutter, zero-native-dependency approach**:
+
+  - ⚡ **Ultra Lightweight (< 50 KB):** Zero heavy ML model weights or C++ dependencies.
+  - 🚀 **Silky 120 FPS Performance:** Fully hardware-accelerated via Impeller and Skia.
+  - 💎 **True Multi-Plane Z-Parallax:** Position any Flutter widget on distinct elevation planes (`SpatialLayer`) with dynamic drop shadows.
+  - 🌈 **Physical Specular & Chromatic Sheen:** Dynamic specular glare and prismatic rainbow dispersion that react fluidly to finger touches and cursor hover.
+  - 🔄 **3D Double-Sided Flip:** Flip between front and back faces with continuous 3D perspective (`SpatialFlipCard`).
+  - 📚 **3D Card Stack / Deck:** Depth-scaled swipeable card carousels (`SpatialCardStack`).
+  - 🌐 **100% Cross-Platform:** Flawless support for iOS, Android, Web, macOS, Windows, and Linux.
+
+  ---
+
+  ## 📸 Architecture & Visual Overview
+
+  <p align="center">
+    <img src="https://raw.githubusercontent.com/govindtank/spatial_card/main/assets/screenshot.svg" width="100%" alt="SpatialCard Architecture Overview" />
+  </p>
+
+  ---
+
+  ## 📦 Installation
+
+  Add `spatial_card` to your `pubspec.yaml`:
+
+  ```yaml
+  dependencies:
+    spatial_card: ^1.0.2
+  ```
 
 Or install via terminal:
 

@@ -2,7 +2,7 @@ name: spatial_card
 description: >-
   A high-performance Flutter package for building 3D tactile interactive cards,
   multi-plane parallax surfaces, specular lighting, and holographic materials.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/govindtank/spatial_card
 repository: https://github.com/govindtank/spatial_card
 issue_tracker: https://github.com/govindtank/spatial_card/issues
