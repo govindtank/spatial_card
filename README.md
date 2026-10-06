@@ -3,6 +3,7 @@
 <p align="center">
   <a href="https://pub.dev/packages/spatial_card"><img src="https://img.shields.io/pub/v/spatial_card.svg?style=flat-square&color=blue" alt="Pub Version"></a>
   <a href="https://pub.dev/packages/spatial_card/score"><img src="https://img.shields.io/pub/points/spatial_card?style=flat-square&color=2E8B57&label=pub%20points" alt="Pub Points"></a>
+  <a href="https://govindtank.github.io/spatial_card/"><img src="https://img.shields.io/badge/Live%20Demo-Try%20In%20Browser-00ff88?style=flat-square&logo=flutter" alt="Live Demo"></a>
   <a href="https://pub.dev/packages/spatial_card"><img src="https://img.shields.io/pub/likes/spatial_card?style=flat-square" alt="Pub Likes"></a>
   <a href="https://github.com/govindtank/spatial_card/actions"><img src="https://github.com/govindtank/spatial_card/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
@@ -48,7 +49,7 @@ Add `spatial_card` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  spatial_card: ^1.0.0
+  spatial_card: ^1.0.1
 ```
 
 Or install via terminal:
@@ -207,6 +208,16 @@ git clone https://github.com/govindtank/spatial_card.git
 cd spatial_card/example
 flutter run
 ```
+
+---
+
+## 🔗 Recommended Ecosystem Pairings
+
+Elevate your Flutter application by pairing `spatial_card` with other companion libraries:
+
+- **[ambient_backdrop_glow](https://pub.dev/packages/ambient_backdrop_glow)** — Dynamic background glow and fluid mesh gradients extracted from image artwork with OKLab color blending.
+- **[ai_voice_orb](https://pub.dev/packages/ai_voice_orb)** — Fluid audio-reactive neural voice orb for Conversational AI agents.
+- **[dart_vector_index](https://pub.dev/packages/dart_vector_index)** — Pure-Dart vector search & HNSW index for on-device RAG.
 
 ---
 
