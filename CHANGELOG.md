@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.0.1
+
+- **Hardware Sensor Stream Binding:** Added `SpatialController.bindTiltStream(Stream<Offset> stream)` for direct binding of gyroscope / accelerometer sensors.
+- **Improved Clamping & Lifecycle:** Hardened normalized tilt coordinates and auto-cleanup of active stream subscriptions upon controller disposal.
+- **Expanded Test Suite:** Added unit test coverage for sensor stream binding and state notification.
+
 ## 1.0.0 - Initial Release
 
 - Initial release of `spatial_card`, a high-performance Flutter package for 3D tactile interactive cards.
