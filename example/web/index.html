@@ -1,46 +1,494 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpatialCard Visualizer & Shader Sandbox</title>
+  <style>
+    :root {
+      --bg: #0b0f17;
+      --card-w: 360px;
+      --card-h: 226px;
+      --radius: 20px;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      user-select: none;
+    }
+    body {
+      background: radial-gradient(circle at 50% 20%, #172136 0%, #080c14 100%);
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      overflow-x: hidden;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      max-width: 700px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #60a5fa, #c084fc, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+    p.subtitle {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 35px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 5px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 8px 18px;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .tab-btn.active {
+      background: #3b82f6;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+    }
+    .scene-container {
+      perspective: 1200px;
+      margin-bottom: 35px;
+      width: var(--card-w);
+      height: var(--card-h);
+      position: relative;
+    }
+    .card-wrap {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.1s cubic-bezier(0.2, 0.8, 0.2, 1);
+      cursor: grab;
+    }
+    .card-wrap:active {
+      cursor: grabbing;
+    }
+    .card-shadow {
+      position: absolute;
+      inset: 10px;
+      border-radius: var(--radius);
+      background: rgba(0, 0, 0, 0.7);
+      filter: blur(28px);
+      transform: translateZ(-50px) scale(0.95);
+      pointer-events: none;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+    .card-body {
+      width: 100%;
+      height: 100%;
+      border-radius: var(--radius);
+      position: relative;
+      overflow: hidden;
+      transform-style: preserve-3d;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4);
+    }
 
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
+    /* PRESET 1: TITANIUM FINTECH */
+    .theme-titanium .card-body {
+      background: linear-gradient(145deg, #1e2530 0%, #0d121a 100%);
+    }
+    .theme-titanium .texture-layer {
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(255,255,255,0.015) 0px,
+        rgba(255,255,255,0.015) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+    }
 
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+    /* PRESET 2: HOLOGRAPHIC FOIL */
+    .theme-holo .card-body {
+      background: linear-gradient(135deg, #180928 0%, #0a0414 100%);
+    }
+    .theme-holo .holo-sheen {
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: color-dodge;
+      opacity: 0.85;
+      pointer-events: none;
+      background: linear-gradient(
+        var(--sheen-angle, 115deg),
+        transparent 0%,
+        rgba(255, 0, 128, 0.3) 25%,
+        rgba(0, 255, 255, 0.4) 45%,
+        rgba(255, 235, 59, 0.4) 55%,
+        rgba(0, 230, 118, 0.3) 75%,
+        transparent 100%
+      );
+      background-size: 200% 200%;
+      background-position: var(--light-x, 50%) var(--light-y, 50%);
+    }
 
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="$FLUTTER_BASE_HREF">
+    /* PRESET 3: OBSIDIAN GLASS */
+    .theme-glass .card-body {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.03) 100%);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+    }
 
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+    /* PRESET 4: NEON CYBERPUNK */
+    .theme-cyber .card-body {
+      background: linear-gradient(135deg, #090e1a 0%, #05060a 100%);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+    }
 
-  <!-- iOS meta tags & icons -->
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="spatial_card_example">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+    /* LAYERS */
+    .layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .specular-glare {
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      background: radial-gradient(
+        circle at var(--light-px, 50%) var(--light-py, 50%),
+        rgba(255, 255, 255, 0.75) 0%,
+        rgba(255, 255, 255, 0.15) 35%,
+        transparent 65%
+      );
+    }
 
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
+    /* CONTENT ON Z-PLANES */
+    .content-layer {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      transform-style: preserve-3d;
+    }
+    .depth-bg {
+      transform: translateZ(10px);
+    }
+    .depth-mid {
+      transform: translateZ(28px);
+    }
+    .depth-high {
+      transform: translateZ(48px);
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,0.5));
+    }
 
-  <title>spatial_card_example</title>
-  <link rel="manifest" href="manifest.json">
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-brand {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #94a3b8;
+    }
+    .chip {
+      width: 44px;
+      height: 32px;
+      background: linear-gradient(135deg, #d4af37, #aa820a);
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      position: relative;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.6);
+    }
+    .card-number {
+      font-family: "Courier New", Courier, monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: #f8fafc;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+    .bottom-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .holder-label {
+      font-size: 0.65rem;
+      color: #64748b;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .holder-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: #e2e8f0;
+    }
+    .badge-pill {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* CONTROLS */
+    .controls {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      width: 100%;
+      max-width: 550px;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 20px;
+      border-radius: 16px;
+    }
+    .control-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .control-item label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #94a3b8;
+    }
+    .control-item input[type="range"] {
+      accent-color: #3b82f6;
+      cursor: pointer;
+    }
+    .legend-box {
+      margin-top: 25px;
+      max-width: 650px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+    }
+    .legend-box strong {
+      color: #60a5fa;
+    }
+    .hint {
+      margin-top: 8px;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+  </style>
 </head>
-<body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
+<body class="theme-holo">
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
-  <script src="flutter_bootstrap.js" async></script>
+  <header>
+    <h1>SpatialCard Visual Engine</h1>
+    <p class="subtitle">
+      Multi-plane 3D parallax + physical specular lighting & material surface shaders in pure Flutter.
+    </p>
+  </header>
+
+  <div class="tabs">
+    <button class="tab-btn" onclick="setPreset('titanium', this)">Brushed Titanium</button>
+    <button class="tab-btn active" onclick="setPreset('holo', this)">Holographic Foil</button>
+    <button class="tab-btn" onclick="setPreset('glass', this)">Frosted Obsidian</button>
+    <button class="tab-btn" onclick="setPreset('cyber', this)">Cyber Neon</button>
+  </div>
+
+  <div class="scene-container" id="scene">
+    <div class="card-wrap" id="card">
+      <div class="card-shadow" id="shadow"></div>
+      <div class="card-body">
+        <div class="layer texture-layer"></div>
+        <div class="layer holo-sheen" id="holoSheen"></div>
+        <div class="layer specular-glare" id="specularGlare"></div>
+
+        <!-- Multi-depth content planes -->
+        <div class="layer content-layer">
+          <div class="top-bar depth-mid">
+            <div class="card-brand" id="brandText">NOUS BLACK // APEX</div>
+            <div class="chip depth-high"></div>
+          </div>
+          
+          <div class="card-number depth-high" id="cardNum">
+            4892 •••• •••• 9210
+          </div>
+          
+          <div class="bottom-bar depth-mid">
+            <div>
+              <div class="holder-label">Cardholder</div>
+              <div class="holder-name depth-mid" id="holderName">GOVIND TANK</div>
+            </div>
+            <div class="badge-pill depth-high" id="badgePill">PLATINUM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="hint">👆 Move cursor / drag finger over card to simulate device gyroscope & touch light</p>
+
+  <div class="controls" style="margin-top: 20px;">
+    <div class="control-item">
+      <label id="depthLabel">Parallax Depth Elevation: 35px</label>
+      <input type="range" id="depthSlider" min="0" max="60" value="35" oninput="updateDepth(this.value)" />
+    </div>
+    <div class="control-item">
+      <label id="glareLabel">Specular Glare Intensity: 80%</label>
+      <input type="range" id="glareSlider" min="0" max="100" value="80" oninput="updateGlare(this.value)" />
+    </div>
+    <div class="control-item">
+      <label id="tiltLabel">Tilt Responsiveness: 24°</label>
+      <input type="range" id="tiltSlider" min="5" max="45" value="24" oninput="maxTilt = this.value" />
+    </div>
+    <div class="control-item">
+      <label>Simulate Auto-Gyro Pulse</label>
+      <button class="tab-btn" style="background:#1e293b; color:#fff;" onclick="toggleGyroSim()">Toggle Idle Drift</button>
+    </div>
+  </div>
+
+  <div class="legend-box">
+    <strong>Architecture in Flutter:</strong><br/>
+    1. <strong>Base Plane (Z=0):</strong> Mesh gradient / procedural noise fragment shader.<br/>
+    2. <strong>Shader Relighting (Z=5):</strong> Custom GLSL calculating fresnel angle & specular reflection off touch/sensor coordinates.<br/>
+    3. <strong>Content Planes (Z=15 to Z=45):</strong> Pure Flutter widgets wrapped in <code>SpatialLayer(depth: d)</code> with real drop shadows projected onto the lower layers.
+  </div>
+
+  <script>
+    const card = document.getElementById('card');
+    const scene = document.getElementById('scene');
+    const shadow = document.getElementById('shadow');
+    const holoSheen = document.getElementById('holoSheen');
+    const specularGlare = document.getElementById('specularGlare');
+    
+    let maxTilt = 24;
+    let isHovered = false;
+    let autoGyro = false;
+    let gyroAngle = 0;
+
+    function handleMove(xNorm, yNorm) {
+      // xNorm, yNorm in range [-1, 1]
+      const rotateY = xNorm * maxTilt;
+      const rotateX = -yNorm * maxTilt;
+
+      card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      
+      const lightX = ((xNorm + 1) / 2) * 100;
+      const lightY = ((yNorm + 1) / 2) * 100;
+
+      card.style.setProperty('--light-px', `${lightX}%`);
+      card.style.setProperty('--light-py', `${lightY}%`);
+      card.style.setProperty('--sheen-angle', `${(xNorm * 45) + 115}deg`);
+
+      // Shadow shift opposite to tilt
+      const shadowX = -xNorm * 30;
+      const shadowY = 20 - yNorm * 20;
+      shadow.style.transform = `translate3d(${shadowX}px, ${shadowY}px, -50px) scale(${1 + Math.abs(xNorm)*0.05})`;
+    }
+
+    scene.addEventListener('mousemove', (e) => {
+      if (autoGyro) return;
+      const rect = scene.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width; // 0 to 1
+      const y = (e.clientY - rect.top) / rect.height; // 0 to 1
+      const xNorm = (x - 0.5) * 2;
+      const yNorm = (y - 0.5) * 2;
+      handleMove(xNorm, yNorm);
+    });
+
+    scene.addEventListener('mouseleave', () => {
+      if (autoGyro) return;
+      card.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      shadow.style.transform = 'translateZ(-50px) scale(0.95)';
+    });
+
+    // Touch support
+    scene.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        const rect = scene.getBoundingClientRect();
+        const touch = e.touches[0];
+        const x = (touch.clientX - rect.left) / rect.width;
+        const y = (touch.clientY - rect.top) / rect.height;
+        handleMove((x - 0.5) * 2, (y - 0.5) * 2);
+      }
+    });
+
+    function setPreset(preset, btn) {
+      document.body.className = `theme-${preset}`;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const brand = document.getElementById('brandText');
+      const badge = document.getElementById('badgePill');
+
+      if (preset === 'titanium') {
+        brand.innerText = 'APPLE // TITANIUM';
+        badge.innerText = 'APPLE CARD';
+      } else if (preset === 'holo') {
+        brand.innerText = 'COLLECTIBLE // APEX #001';
+        badge.innerText = 'HOLOGRAPHIC';
+      } else if (preset === 'glass') {
+        brand.innerText = 'REVOLUT // ULTRA';
+        badge.innerText = 'OBSIDIAN';
+      } else if (preset === 'cyber') {
+        brand.innerText = 'NETRUNNER // 2077';
+        badge.innerText = 'CYBERWARE';
+      }
+    }
+
+    function updateDepth(val) {
+      document.getElementById('depthLabel').innerText = `Parallax Depth Elevation: ${val}px`;
+      document.querySelectorAll('.depth-high').forEach(el => {
+        el.style.transform = `translateZ(${val}px)`;
+      });
+      document.querySelectorAll('.depth-mid').forEach(el => {
+        el.style.transform = `translateZ(${val * 0.6}px)`;
+      });
+    }
+
+    function updateGlare(val) {
+      document.getElementById('glareLabel').innerText = `Specular Glare Intensity: ${val}%`;
+      specularGlare.style.opacity = val / 100;
+    }
+
+    function toggleGyroSim() {
+      autoGyro = !autoGyro;
+      if (autoGyro) runGyroLoop();
+    }
+
+    function runGyroLoop() {
+      if (!autoGyro) return;
+      gyroAngle += 0.03;
+      const xNorm = Math.sin(gyroAngle) * 0.7;
+      const yNorm = Math.cos(gyroAngle * 0.8) * 0.5;
+      handleMove(xNorm, yNorm);
+      requestAnimationFrame(runGyroLoop);
+    }
+  </script>
 </body>
 </html>
