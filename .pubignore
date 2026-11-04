@@ -8,6 +8,11 @@ build/
 example/.dart_tool/
 example/.packages
 example/build/
+example/android/
+example/ios/
+example/macos/
+example/windows/
+example/linux/
 example/.idea/
 example/*.iml
 example/.flutter-plugins

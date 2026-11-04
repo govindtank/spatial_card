@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.0
+
+* **Smoother Mouse Exit Physics**: Enhanced spring reset on cursor exit to eliminate sudden perspective snaps.
+* **Cleaner Distribution**: Excluded example platform directories via `.pubignore` to shrink archive payload.
+
 ## 1.0.2
 
 * **Documentation & Assets**: Standardized centered vector badge header, added Live Web Demo badge, absolute asset links, and ecosystem pairings.
