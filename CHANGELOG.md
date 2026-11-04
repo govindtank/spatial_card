@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## 1.1.1
+
+* **Discovery & Metadata**: Added official project funding links and refined discovery search topics.
+
 ## 1.1.0
 
 * **Smoother Mouse Exit Physics**: Enhanced spring reset on cursor exit to eliminate sudden perspective snaps.
